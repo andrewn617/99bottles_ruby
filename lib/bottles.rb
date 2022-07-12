@@ -17,8 +17,8 @@ class Bottle
 
   def verse
     "#{remainder} #{bottle} of beer on the wall, " +
-      "#{remainder} #{bottle} of beer.\n" +
-      "Take #{take} down and pass it around, " +
+      "#{remainder.downcase} #{bottle} of beer.\n" +
+      "#{take}" +
       "#{next_bottle} of beer on the wall.\n"
   end
 
@@ -27,14 +27,17 @@ class Bottle
   end
 
   def remainder
-    index == 0 ? "no more" : index
+    index == 0 ? "No more" : index.to_s
   end
 
   def take
-    index == 1 ? "it" : "one"
+    return "Go to the store and buy some more, " if index == 0
+
+    index == 1 ? "Take it down and pass it around, " : "Take one down and pass it around, "
   end
 
   def next_bottle
+    return "99 bottles" if index == 0
     return "no more bottles" if index - 1 == 0
 
     index - 1 == 1 ? "1 bottle" : "#{index - 1} bottles"
