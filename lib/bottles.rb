@@ -14,6 +14,10 @@ end
 
 class BottleFactory
   def self.build(index)
+    return SecondLastBottle.new if index == 2
+    return LastBottle.new if index == 1
+    return NullBottle.new if index == 0
+
     Bottle.new(index)
   end
 end
@@ -26,30 +30,36 @@ class Bottle
   end
 
   def verse
-    "#{remainder} #{bottle} of beer on the wall, " +
-      "#{remainder.downcase} #{bottle} of beer.\n" +
-      "#{take}" +
-      "#{next_bottle} of beer on the wall.\n"
+    "#{index} bottles of beer on the wall, " +
+      "#{index} bottles of beer.\n" +
+      "Take one down and pass it around, " +
+      "#{index - 1} bottles of beer on the wall.\n"
   end
+end
 
-  def bottle
-    index == 1 ? "bottle" : "bottles"
+class SecondLastBottle
+  def verse
+    "2 bottles of beer on the wall, " +
+      "2 bottles of beer.\n" +
+      "Take one down and pass it around, " +
+      "1 bottle of beer on the wall.\n"
   end
+end
 
-  def remainder
-    index == 0 ? "No more" : index.to_s
+class LastBottle
+  def verse
+    "1 bottle of beer on the wall, " +
+      "1 bottle of beer.\n" +
+      "Take it down and pass it around, " +
+      "no more bottles of beer on the wall.\n"
   end
+end
 
-  def take
-    return "Go to the store and buy some more, " if index == 0
-
-    index == 1 ? "Take it down and pass it around, " : "Take one down and pass it around, "
-  end
-
-  def next_bottle
-    return "99 bottles" if index == 0
-    return "no more bottles" if index - 1 == 0
-
-    index - 1 == 1 ? "1 bottle" : "#{index - 1} bottles"
+class NullBottle
+  def verse
+    "No more bottles of beer on the wall, " +
+      "no more bottles of beer.\n" +
+      "Go to the store and buy some more, " +
+      "99 bottles of beer on the wall.\n"
   end
 end
