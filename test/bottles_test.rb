@@ -31,7 +31,7 @@ class BottlesTest < Minitest::Test
   end
 
   def test_verse_1
-    expected =g
+    expected =
       "1 bottle of beer on the wall, " +
         "1 bottle of beer.\n" +
         "Take it down and pass it around, " +
@@ -50,7 +50,6 @@ class BottlesTest < Minitest::Test
   end
 
   def test_a_couple_verses
-    skip
     expected =
       "99 bottles of beer on the wall, " +
         "99 bottles of beer.\n" +

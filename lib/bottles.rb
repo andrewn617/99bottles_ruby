@@ -1,4 +1,8 @@
 class Bottles
+  def verses(*numbers)
+    numbers.map(&method(:verse)).join("\n")
+  end
+
   def verse(number)
     "#{remainder(number)} #{bottle(number)} of beer on the wall, " +
       "#{remainder(number)} #{bottle(number)} of beer.\n" +
