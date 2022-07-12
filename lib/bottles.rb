@@ -1,6 +1,10 @@
 class Bottles
-  def verses(*numbers)
-    numbers.map(&method(:verse)).join("\n")
+  def song
+    verses(99, 0)
+  end
+
+  def verses(start, finish)
+    (finish..start).to_a.reverse.map(&method(:verse)).join("\n")
   end
 
   def verse(number)
