@@ -8,7 +8,13 @@ class Bottles
   end
 
   def verse(number)
-    Bottle.new(number).verse
+    BottleFactory.build(number).verse
+  end
+end
+
+class BottleFactory
+  def self.build(index)
+    Bottle.new(index)
   end
 end
 
