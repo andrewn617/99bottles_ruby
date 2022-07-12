@@ -4,6 +4,12 @@ class Bottles
   end
 
   def verse(number)
+    Bottle.new.verse(number)
+  end
+end
+
+class Bottle
+  def verse(number)
     "#{remainder(number)} #{bottle(number)} of beer on the wall, " +
       "#{remainder(number)} #{bottle(number)} of beer.\n" +
       "Take #{take(number)} down and pass it around, " +
