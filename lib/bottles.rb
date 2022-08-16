@@ -25,6 +25,7 @@ end
 
 class BottleFactory
   def self.build(index)
+    return SixPack.new if index == 6
     return SecondLastBottle.new if index == 2
     return LastBottle.new if index == 1
     return NullBottle.new if index == 0
@@ -78,6 +79,20 @@ class Bottle
 
   def next_bottle
     BottleFactory.build(index - 1)
+  end
+end
+
+class SixPack < Bottle
+  def initialize
+    super(6)
+  end
+
+  def to_s
+    "1 six-pack"
+  end
+
+  def pronoun
+    "it"
   end
 end
 
