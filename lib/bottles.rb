@@ -28,8 +28,6 @@ class BottleFactory
     case index
     when 6
       SixPack.new
-    when 2
-      SecondLastBottle.new
     when 1
       LastBottle.new
     when 0
@@ -66,7 +64,7 @@ class Bottle
   def initialize(index)
     @index = index
   end
-  g
+
   def to_s
     "#{quantity} #{container}"
   end
@@ -107,16 +105,6 @@ class SixPack < Bottle
 
   def pronoun
     "it"
-  end
-end
-
-class SecondLastBottle < Bottle
-  def initialize
-    super(2)
-  end
-
-  def pronoun
-    "one"
   end
 end
 
