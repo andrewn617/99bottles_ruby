@@ -14,7 +14,7 @@ class Bottles
   end
 
   def verse(number)
-    bottle = BottleRepository.find_or_create(number)
+    bottle = BottleRepository.find_or_build(number)
 
     "#{bottle} of beer on the wall, ".capitalize +
       "#{bottle} of beer.\n" +
@@ -36,26 +36,26 @@ class BottleFactory
       NullBottle.new
     else
       Bottle.new(index)
-    endg
+    end
   end
 end
 
 class BottleRepository
   include Singleton
 
-  def self.find_or_create(index)
-    instance.find_or_create(index)
+  def self.find_or_build(index)
+    instance.find_or_build(index)
   end
 
   def initialize
     @repository = {}
   end
 
-  def find_or_create(index)
-    @repository[index] || create(index)
+  def find_or_build(index)
+    @repository[index] || build(index)
   end
 
-  def create(index)
+  def build(index)
     @repository[index] = BottleFactory.build(index)
   end
 end
@@ -126,7 +126,7 @@ class LastBottle < Bottle
   end
 
   def next_bottle
-    BottleRepository.find_or_create(0)
+    BottleRepository.find_or_build(0)
   end
 end
 
@@ -148,6 +148,6 @@ class NullBottle < Bottle
   end
 
   def next_bottle
-    BottleRepository.find_or_create(99)
+    BottleRepository.find_or_build(99)
   end
 end
