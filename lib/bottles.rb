@@ -14,7 +14,7 @@ class Bottles
   end
 
   def verse(number)
-    bottle = BottleRepository.find_or_build(number)
+    bottle = BottleGroupRepository.find_or_build(number)
 
     "#{bottle} of beer on the wall, ".capitalize +
       "#{bottle} of beer.\n" +
@@ -23,22 +23,22 @@ class Bottles
   end
 end
 
-class BottleFactory
+class BottleGroupFactory
   def self.build(index)
     case index
     when 6
       SixPack.new
     when 1
-      LastBottle.new
+      SingleBottleGroup.new
     when 0
-      NullBottle.new
+      EmptyBottleGroup.new
     else
-      Bottle.new(index)
+      BottleGroup.new(index)
     end
   end
 end
 
-class BottleRepository
+class BottleGroupRepository
   include Singleton
 
   def self.find_or_build(index)
@@ -54,11 +54,11 @@ class BottleRepository
   end
 
   def build(index)
-    @repository[index] = BottleFactory.build(index)
+    @repository[index] = BottleGroupFactory.build(index)
   end
 end
 
-class Bottle
+class BottleGroup
   attr_reader :index
 
   def initialize(index)
@@ -86,11 +86,11 @@ class Bottle
   end
 
   def next_bottle
-    BottleFactory.build(index - 1)
+    BottleGroupRepository.find_or_build(index - 1)
   end
 end
 
-class SixPack < Bottle
+class SixPack < BottleGroup
   def initialize
     super(6)
   end
@@ -108,7 +108,7 @@ class SixPack < Bottle
   end
 end
 
-class LastBottle < Bottle
+class SingleBottleGroup < BottleGroup
   def initialize
     super(1)
   end
@@ -122,11 +122,11 @@ class LastBottle < Bottle
   end
 
   def next_bottle
-    BottleRepository.find_or_build(0)
+    BottleGroupRepository.find_or_build(0)
   end
 end
 
-class NullBottle < Bottle
+class EmptyBottleGroup < BottleGroup
   def initialize
     super(0)
   end
@@ -144,6 +144,6 @@ class NullBottle < Bottle
   end
 
   def next_bottle
-    BottleRepository.find_or_build(99)
+    BottleGroupRepository.find_or_build(99)
   end
 end
