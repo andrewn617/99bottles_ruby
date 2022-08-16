@@ -25,12 +25,18 @@ end
 
 class BottleFactory
   def self.build(index)
-    return SixPack.new if index == 6
-    return SecondLastBottle.new if index == 2
-    return LastBottle.new if index == 1
-    return NullBottle.new if index == 0
-
-    Bottle.new(index)
+    case index
+    when 6
+      SixPack.new
+    when 2
+      SecondLastBottle.new
+    when 1
+      LastBottle.new
+    when 0
+      NullBottle.new
+    else
+      Bottle.new(index)
+    endg
   end
 end
 
