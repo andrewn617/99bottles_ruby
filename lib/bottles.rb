@@ -1,3 +1,5 @@
+require "singleton"
+
 class Bottles
   def song
     verses(99, 0)
@@ -12,7 +14,7 @@ class Bottles
   end
 
   def verse(number)
-    bottle = BottleFactory.build(number)
+    bottle = BottleRepository.find_or_create(number)
 
     "#{bottle} of beer on the wall, ".capitalize +
       "#{bottle} of beer.\n" +
@@ -28,6 +30,26 @@ class BottleFactory
     return NullBottle.new if index == 0
 
     Bottle.new(index)
+  end
+end
+
+class BottleRepository
+  include Singleton
+
+  def self.find_or_create(index)
+    instance.find_or_create(index)
+  end
+
+  def initialize
+    @repository = {}
+  end
+
+  def find_or_create(index)
+    @repository[index] || create(index)
+  end
+
+  def create(index)
+    @repository[index] = BottleFactory.build(index)
   end
 end
 
@@ -83,7 +105,7 @@ class LastBottle < Bottle
   end
 
   def next_bottle
-    BottleFactory.build(0)
+    BottleRepository.find_or_create(0)
   end
 end
 
@@ -105,6 +127,6 @@ class NullBottle < Bottle
   end
 
   def next_bottle
-    BottleFactory.build(99)
+    BottleRepository.find_or_create(99)
   end
 end
