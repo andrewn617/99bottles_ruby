@@ -66,9 +66,13 @@ class Bottle
   def initialize(index)
     @index = index
   end
-
+  g
   def to_s
-    "#{index} #{container}"
+    "#{quantity} #{container}"
+  end
+
+  def quantity
+    index.to_s
   end
 
   def container
@@ -93,8 +97,12 @@ class SixPack < Bottle
     super(6)
   end
 
-  def to_s
-    "1 six-pack"
+  def quantity
+    "1"
+  end
+
+  def container
+    "six-pack"
   end
 
   def pronoun
@@ -135,8 +143,8 @@ class NullBottle < Bottle
     super(0)
   end
 
-  def to_s
-    "no more #{container}"
+  def quantity
+    "no more"
   end
 
   def container
