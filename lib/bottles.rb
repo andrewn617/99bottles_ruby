@@ -4,7 +4,11 @@ class Bottles
   end
 
   def verses(start, finish)
-    (finish..start).to_a.reverse.map(&method(:verse)).join("\n")
+    (finish..start)
+      .to_a
+      .reverse
+      .map(&method(:verse))
+      .join("\n")
   end
 
   def verse(number)
@@ -35,11 +39,19 @@ class Bottle
   end
 
   def to_s
-    "#{index} bottles"
+    "#{index} #{container}"
+  end
+
+  def container
+    "bottles"
   end
 
   def action
-    "Take one down and pass it around"
+    "Take #{pronoun} down and pass it around"
+  end
+
+  def pronoun
+    "one"
   end
 
   def next_bottle
@@ -47,27 +59,27 @@ class Bottle
   end
 end
 
-class SecondLastBottle
-  def to_s
-    "2 bottles"
+class SecondLastBottle < Bottle
+  def initialize
+    super(2)
   end
 
-  def action
-    "Take one down and pass it around"
-  end
-
-  def next_bottle
-    BottleFactory.build(1)
+  def pronoun
+    "one"
   end
 end
 
-class LastBottle
-  def to_s
-    "1 bottle"
+class LastBottle < Bottle
+  def initialize
+    super(1)
   end
 
-  def action
-    "Take it down and pass it around"
+  def container
+    "bottle"
+  end
+
+  def pronoun
+    "it"
   end
 
   def next_bottle
@@ -75,9 +87,17 @@ class LastBottle
   end
 end
 
-class NullBottle
+class NullBottle < Bottle
+  def initialize
+    super(0)
+  end
+
   def to_s
-    "no more bottles"
+    "no more #{container}"
+  end
+
+  def container
+    "bottles"
   end
 
   def action
