@@ -8,7 +8,12 @@ class Bottles
   end
 
   def verse(number)
-    BottleFactory.build(number).verse
+    bottle = BottleFactory.build(number)
+
+    "#{bottle} of beer on the wall, ".capitalize +
+      "#{bottle} of beer.\n" +
+      "#{bottle.action}, " +
+      "#{bottle.next_bottle} of beer on the wall.\n"
   end
 end
 
@@ -29,37 +34,57 @@ class Bottle
     @index = index
   end
 
-  def verse
-    "#{index} bottles of beer on the wall, " +
-      "#{index} bottles of beer.\n" +
-      "Take one down and pass it around, " +
-      "#{index - 1} bottles of beer on the wall.\n"
+  def to_s
+    "#{index} bottles"
+  end
+
+  def action
+    "Take one down and pass it around"
+  end
+
+  def next_bottle
+    BottleFactory.build(index - 1)
   end
 end
 
 class SecondLastBottle
-  def verse
-    "2 bottles of beer on the wall, " +
-      "2 bottles of beer.\n" +
-      "Take one down and pass it around, " +
-      "1 bottle of beer on the wall.\n"
+  def to_s
+    "2 bottles"
+  end
+
+  def action
+    "Take one down and pass it around"
+  end
+
+  def next_bottle
+    BottleFactory.build(1)
   end
 end
 
 class LastBottle
-  def verse
-    "1 bottle of beer on the wall, " +
-      "1 bottle of beer.\n" +
-      "Take it down and pass it around, " +
-      "no more bottles of beer on the wall.\n"
+  def to_s
+    "1 bottle"
+  end
+
+  def action
+    "Take it down and pass it around"
+  end
+
+  def next_bottle
+    BottleFactory.build(0)
   end
 end
 
 class NullBottle
-  def verse
-    "No more bottles of beer on the wall, " +
-      "no more bottles of beer.\n" +
-      "Go to the store and buy some more, " +
-      "99 bottles of beer on the wall.\n"
+  def to_s
+    "no more bottles"
+  end
+
+  def action
+    "Go to the store and buy some more"
+  end
+
+  def next_bottle
+    BottleFactory.build(99)
   end
 end
