@@ -1,5 +1,3 @@
-require "singleton"
-
 class Bottles
   def song
     verses(99, 0)
@@ -21,43 +19,40 @@ class Bottles
   end
 end
 
-class BottleGroupFactory
+module BottleGroupFactory
   def self.build(index)
-    case index
-    when 6
-      SixPack.new
-    when 1
-      SingleBottleGroup.new
-    when 0
-      EmptyBottleGroup.new
-    else
-      BottleGroup.new(index)
-    end
+    registry[index].new(index)
+  end
+
+  def self.register(index, klass)
+    registry[index] = klass
+  end
+
+  def self.registry
+    @registry ||= Hash.new(BottleGroup)
   end
 end
 
-class BottleGroupRepository
-  include Singleton
-
+module BottleGroupRepository
   def self.find_or_build(index)
-    instance.find_or_build(index)
+    repository[index] || build(index)
   end
 
-  def initialize
+  def self.repository
     @repository = {}
   end
 
-  def find_or_build(index)
-    @repository[index] || build(index)
-  end
-
-  def build(index)
-    @repository[index] = BottleGroupFactory.build(index)
+  def self.build(index)
+    repository[index] = BottleGroupFactory.build(index)
   end
 end
 
 class BottleGroup
   attr_reader :index
+
+  def self.register_at(index)
+    BottleGroupFactory.register(index, self)
+  end
 
   def initialize(index)
     @index = index
@@ -89,9 +84,7 @@ class BottleGroup
 end
 
 class SixPack < BottleGroup
-  def initialize
-    super(6)
-  end
+  register_at 6
 
   def quantity
     "1"
@@ -107,9 +100,7 @@ class SixPack < BottleGroup
 end
 
 class SingleBottleGroup < BottleGroup
-  def initialize
-    super(1)
-  end
+  register_at 1
 
   def container
     "bottle"
@@ -125,9 +116,7 @@ class SingleBottleGroup < BottleGroup
 end
 
 class EmptyBottleGroup < BottleGroup
-  def initialize
-    super(0)
-  end
+  register_at 0
 
   def quantity
     "no more"
