@@ -6,9 +6,7 @@ class Bottles
   end
 
   def verses(start, finish)
-    (finish..start)
-      .to_a
-      .reverse
+    start.downto(finish)
       .map(&method(:verse))
       .join("\n")
   end
